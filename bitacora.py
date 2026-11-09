@@ -91,7 +91,7 @@ def construir_reporte(datos, televisores, lineas, fecha, sesion):
         f"  Ocupados ahora:            {ocupados} de {len(televisores)}",
         f"  Canal mas pedido hoy:      {canal} ({veces} pedidos)",
         "",
-        "APUESTAS (SIMULACION)",
+        "APUESTAS",
         f"  Apuestas hoy:              {cantidad}",
         f"  Monto apostado hoy:        S/ {monto:.2f}",
         "",

@@ -62,7 +62,7 @@ def mostrar_eventos(datos):
 
 
 def depositar(datos, sesion):
-    mostrar_titulo("Depositar saldo (simulacion)")
+    mostrar_titulo("Depositar saldo")
     dni = pedir_usuario(datos, sesion)
     if dni is None:
         return
@@ -77,7 +77,7 @@ def depositar(datos, sesion):
         return
     datos["saldos"][dni] = round(saldo_de(datos, dni) + monto, 2)
     guardar_saldos(datos)
-    registrar_bitacora(sesion["usuario"], f"Deposito simulado de S/ {monto} por {METODOS[metodo - 1]} (DNI {dni})")
+    registrar_bitacora(sesion["usuario"], f"Deposito de S/ {monto} por {METODOS[metodo - 1]} (DNI {dni})")
     print(f"\nDeposito registrado. Saldo actual: S/ {datos['saldos'][dni]:.2f}")
 
 
@@ -90,7 +90,7 @@ def ver_saldo(datos, sesion):
 
 
 def apostar(datos, sesion):
-    mostrar_titulo("Apostar (simulacion)")
+    mostrar_titulo("Apostar")
     dni = pedir_usuario(datos, sesion)
     if dni is None:
         return
@@ -200,7 +200,7 @@ def resolver_evento(datos, sesion):
 
 
 def mostrar_menu_apuestas():
-    mostrar_titulo("Apuestas (simulacion)")
+    mostrar_titulo("Apuestas")
     print(" 1. Depositar saldo")
     print(" 2. Ver saldo")
     print(" 3. Ver eventos y cuotas")

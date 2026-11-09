@@ -84,7 +84,7 @@ def mostrar_menu(sesion):
     print(" 2. Listar usuarios registrados")
     print(" 3. Buscar usuario por DNI")
     print(f" 4. Televisores y canales para ver partido ({TOTAL_TELEVISORES})")
-    print(" 5. Apuestas (simulacion)")
+    print(" 5. Apuestas")
     print(" 6. Editar usuario                  [solo administrador]")
     print(" 7. Eliminar usuario                [solo administrador]")
     print(" 8. Camaras de seguridad            [solo administrador]")

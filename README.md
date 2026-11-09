@@ -1,4 +1,4 @@
-# Sistema Tinbet - Registro de usuarios, televisores y apuestas (simulacion)
+# Sistema Tinbet - Registro de usuarios, televisores y apuestas
 
 Prototipo en Python para Tinbet, KING TECH CORPORATION S.A.C.
 
@@ -9,7 +9,7 @@ Prototipo en Python para Tinbet, KING TECH CORPORATION S.A.C.
 - Dos tipos de ingreso: administrador (con clave) y operador.
 - Solo administradores: camaras, bitacora y reportes, editar y eliminar usuarios, resolver eventos.
 - Televisores: se elige el televisor y luego el canal (HBO Max, Disney+, DirecTV GO, ESPN y mas).
-- Apuestas en modo simulacion: deposito de saldo de prueba, eventos con cuotas, apuestas y pago al cerrar el evento. No se usa dinero real.
+- Apuestas: deposito de saldo, eventos con cuotas, apuestas y pago al cerrar el evento. Todo se guarda en archivos de texto.
 - Reporte diario en un archivo de texto.
 - Todo queda registrado en archivos de texto dentro de la carpeta `datos/`.
 
@@ -30,7 +30,7 @@ Administrador inicial: usuario `admin`, clave `tinbet2026`.
 | bitacora.txt | Todo lo que ocurre en el sistema, con fecha y hora de Peru |
 | equipos.txt | Estado de las camaras |
 | televisores.txt | Televisores, canal elegido y usuario |
-| saldos.txt | Saldo de prueba de cada usuario |
+| saldos.txt | Saldo de cada usuario |
 | apuestas.txt | Tickets de apuestas |
 | resultados.txt | Eventos cerrados |
 | reporte_FECHA.txt | Reporte diario |
@@ -51,7 +51,7 @@ Administrador inicial: usuario `admin`, clave `tinbet2026`.
 | camaras.py | Camaras de seguridad (admin) | Oscar |
 | equipos.py | Televisores: elegir televisor y canal | Erick |
 | canales.py | Lista y eleccion de canales | Erick |
-| apuestas.py | Depositos, eventos, apuestas y pagos (simulacion) | Erick |
+| apuestas.py | Depositos, eventos, apuestas y pagos | Erick |
 | main.py | Menu principal y resumen general | Misael |
 | pantalla.py | Titulos y formato de pantalla | Misael |
 | fechas.py | Fecha y hora de Peru y duracion | Misael |
