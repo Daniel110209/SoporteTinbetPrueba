@@ -3,7 +3,7 @@ from rutas import (
     ARCHIVO_USUARIOS,
     ARCHIVO_RECHAZADOS,
     ARCHIVO_EQUIPOS,
-    ARCHIVO_CABLES,
+    ARCHIVO_TELEVISORES,
     preparar_carpeta,
 )
 from fechas import ahora
@@ -76,28 +76,28 @@ def cargar_estados(estados):
                     estados[partes[0]] = valores
 
 
-def guardar_cables(cables):
+def guardar_televisores(televisores):
     preparar_carpeta()
-    with open(ARCHIVO_CABLES, "w", encoding="utf-8") as archivo:
-        for cable in cables:
+    with open(ARCHIVO_TELEVISORES, "w", encoding="utf-8") as archivo:
+        for tv in televisores:
             linea = "|".join([
-                str(cable["estado"]),
-                cable["dni"],
-                cable["canal"],
-                cable["inicio"],
+                str(tv["estado"]),
+                tv["dni"],
+                tv["canal"],
+                tv["inicio"],
             ])
             archivo.write(linea + "\n")
 
 
-def cargar_cables(cables):
-    if not os.path.exists(ARCHIVO_CABLES):
+def cargar_televisores(televisores):
+    if not os.path.exists(ARCHIVO_TELEVISORES):
         return
-    with open(ARCHIVO_CABLES, "r", encoding="utf-8") as archivo:
+    with open(ARCHIVO_TELEVISORES, "r", encoding="utf-8") as archivo:
         lineas = archivo.read().splitlines()
-    for i in range(min(len(lineas), len(cables))):
+    for i in range(min(len(lineas), len(televisores))):
         partes = lineas[i].split("|")
         if len(partes) == 4:
-            cables[i] = {
+            televisores[i] = {
                 "estado": int(partes[0]),
                 "dni": partes[1],
                 "canal": partes[2],

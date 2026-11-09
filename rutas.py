@@ -6,7 +6,7 @@ ARCHIVO_RECHAZADOS = os.path.join(CARPETA, "rechazados.txt")
 ARCHIVO_ADMINS = os.path.join(CARPETA, "administradores.txt")
 ARCHIVO_BITACORA = os.path.join(CARPETA, "bitacora.txt")
 ARCHIVO_EQUIPOS = os.path.join(CARPETA, "equipos.txt")
-ARCHIVO_CABLES = os.path.join(CARPETA, "cables.txt")
+ARCHIVO_TELEVISORES = os.path.join(CARPETA, "televisores.txt")
 
 
 def preparar_carpeta():
