@@ -1,12 +1,21 @@
 import os
-from rutas import (
-    ARCHIVO_USUARIOS,
-    ARCHIVO_RECHAZADOS,
-    ARCHIVO_EQUIPOS,
-    ARCHIVO_TELEVISORES,
-    preparar_carpeta,
-)
 from fechas import ahora
+
+CARPETA = "datos"
+ARCHIVO_USUARIOS = os.path.join(CARPETA, "usuarios.txt")
+ARCHIVO_RECHAZADOS = os.path.join(CARPETA, "rechazados.txt")
+ARCHIVO_ADMINS = os.path.join(CARPETA, "administradores.txt")
+ARCHIVO_BITACORA = os.path.join(CARPETA, "bitacora.txt")
+ARCHIVO_EQUIPOS = os.path.join(CARPETA, "equipos.txt")
+ARCHIVO_TELEVISORES = os.path.join(CARPETA, "televisores.txt")
+ARCHIVO_SALDOS = os.path.join(CARPETA, "saldos.txt")
+ARCHIVO_APUESTAS = os.path.join(CARPETA, "apuestas.txt")
+ARCHIVO_RESULTADOS = os.path.join(CARPETA, "resultados.txt")
+
+
+def preparar_carpeta():
+    if not os.path.exists(CARPETA):
+        os.makedirs(CARPETA)
 
 
 def guardar_usuarios(datos):
@@ -103,3 +112,93 @@ def cargar_televisores(televisores):
                 "canal": partes[2],
                 "inicio": partes[3],
             }
+
+
+def contar_rechazados_hoy(fecha):
+    if not os.path.exists(ARCHIVO_RECHAZADOS):
+        return 0
+    total = 0
+    with open(ARCHIVO_RECHAZADOS, "r", encoding="utf-8") as archivo:
+        for linea in archivo:
+            partes = linea.strip().split("|")
+            if len(partes) == 3 and partes[2].startswith(fecha):
+                total = total + 1
+    return total
+
+
+def guardar_saldos(datos):
+    preparar_carpeta()
+    with open(ARCHIVO_SALDOS, "w", encoding="utf-8") as archivo:
+        for dni in datos["saldos"]:
+            archivo.write(f"{dni}|{datos['saldos'][dni]:.2f}\n")
+
+
+def cargar_saldos(datos):
+    if not os.path.exists(ARCHIVO_SALDOS):
+        return
+    with open(ARCHIVO_SALDOS, "r", encoding="utf-8") as archivo:
+        for linea in archivo:
+            partes = linea.strip().split("|")
+            if len(partes) == 2:
+                datos["saldos"][partes[0]] = float(partes[1])
+
+
+def guardar_apuestas(datos):
+    preparar_carpeta()
+    with open(ARCHIVO_APUESTAS, "w", encoding="utf-8") as archivo:
+        for ap in datos["apuestas"]:
+            linea = "|".join([
+                ap["ticket"],
+                ap["dni"],
+                str(ap["evento"]),
+                ap["pronostico"],
+                str(ap["monto"]),
+                str(ap["cuota"]),
+                ap["estado"],
+                ap["fecha"],
+            ])
+            archivo.write(linea + "\n")
+
+
+def cargar_apuestas(datos):
+    if not os.path.exists(ARCHIVO_APUESTAS):
+        return
+    with open(ARCHIVO_APUESTAS, "r", encoding="utf-8") as archivo:
+        for linea in archivo:
+            partes = linea.strip().split("|")
+            if len(partes) == 8:
+                datos["apuestas"].append({
+                    "ticket": partes[0],
+                    "dni": partes[1],
+                    "evento": int(partes[2]),
+                    "pronostico": partes[3],
+                    "monto": int(partes[4]),
+                    "cuota": float(partes[5]),
+                    "estado": partes[6],
+                    "fecha": partes[7],
+                })
+
+
+def guardar_resultados(datos):
+    preparar_carpeta()
+    with open(ARCHIVO_RESULTADOS, "w", encoding="utf-8") as archivo:
+        for evento in datos["resultados"]:
+            archivo.write(f"{evento}|{datos['resultados'][evento]}\n")
+
+
+def cargar_resultados(datos):
+    if not os.path.exists(ARCHIVO_RESULTADOS):
+        return
+    with open(ARCHIVO_RESULTADOS, "r", encoding="utf-8") as archivo:
+        for linea in archivo:
+            partes = linea.strip().split("|")
+            if len(partes) == 2:
+                datos["resultados"][int(partes[0])] = partes[1]
+
+
+def guardar_reporte(fecha, lineas):
+    preparar_carpeta()
+    ruta = os.path.join(CARPETA, f"reporte_{fecha}.txt")
+    with open(ruta, "w", encoding="utf-8") as archivo:
+        archivo.write("\n".join(lineas) + "\n")
+    return ruta

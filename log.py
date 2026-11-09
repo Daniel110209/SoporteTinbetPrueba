@@ -1,5 +1,5 @@
 import os
-from rutas import ARCHIVO_BITACORA, preparar_carpeta
+from archivos import ARCHIVO_BITACORA, preparar_carpeta
 from fechas import ahora
 
 

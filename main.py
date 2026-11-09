@@ -1,6 +1,14 @@
 from entradas import leer_entero
 from pantalla import mostrar_titulo
-from archivos import cargar_usuarios, cargar_estados, cargar_televisores, contar_rechazados
+from archivos import (
+    cargar_usuarios,
+    cargar_estados,
+    cargar_televisores,
+    cargar_saldos,
+    cargar_apuestas,
+    cargar_resultados,
+    contar_rechazados,
+)
 from log import registrar_bitacora
 from seguridad import (
     crear_admin_inicial,
@@ -9,11 +17,12 @@ from seguridad import (
     crear_admin,
     es_admin,
 )
-from registro import registrar_usuario
+from registro import registrar_usuario, editar_usuario, eliminar_usuario
 from consultas import listar_usuarios, buscar_usuario
 from equipos import gestionar_televisores, contar_libres, televisor_libre
 from camaras import gestionar_camaras, contar_activas
 from canales import CANALES
+from apuestas import gestionar_apuestas, contar_pendientes
 from bitacora import ver_bitacora
 
 TOTAL_TELEVISORES = 9
@@ -29,6 +38,9 @@ def crear_datos():
         "codigos": [],
         "fechas": [],
         "rechazados": 0,
+        "saldos": {},
+        "apuestas": [],
+        "resultados": {},
     }
 
 
@@ -41,6 +53,16 @@ def crear_televisores():
     for _ in range(TOTAL_TELEVISORES):
         televisores.append(televisor_libre())
     return televisores
+
+
+def cargar_todo(datos, estados, televisores):
+    cargar_usuarios(datos)
+    datos["rechazados"] = contar_rechazados()
+    cargar_saldos(datos)
+    cargar_apuestas(datos)
+    cargar_resultados(datos)
+    cargar_estados(estados)
+    cargar_televisores(televisores)
 
 
 def mostrar_menu_inicio():
@@ -62,10 +84,13 @@ def mostrar_menu(sesion):
     print(" 2. Listar usuarios registrados")
     print(" 3. Buscar usuario por DNI")
     print(f" 4. Televisores y canales para ver partido ({TOTAL_TELEVISORES})")
-    print(" 5. Camaras de seguridad            [solo administrador]")
-    print(" 6. Bitacora del sistema            [solo administrador]")
-    print(" 7. Resumen general")
-    print(" 8. Crear nuevo administrador       [solo administrador]")
+    print(" 5. Apuestas (simulacion)")
+    print(" 6. Editar usuario                  [solo administrador]")
+    print(" 7. Eliminar usuario                [solo administrador]")
+    print(" 8. Camaras de seguridad            [solo administrador]")
+    print(" 9. Bitacora y reportes             [solo administrador]")
+    print("10. Resumen general")
+    print("11. Crear nuevo administrador       [solo administrador]")
     print(" 0. Cerrar sesion")
 
 
@@ -75,6 +100,8 @@ def mostrar_resumen(datos, estados, televisores, sesion):
     print(f" Usuarios rechazados por ser menores:  {datos['rechazados']}")
     print(f" Televisores disponibles:              {contar_libres(televisores)} de {len(televisores)}")
     print(f" Canales para ver partido:             {len(CANALES)}")
+    print(f" Apuestas registradas:                 {len(datos['apuestas'])}")
+    print(f" Apuestas pendientes:                  {contar_pendientes(datos)}")
     if es_admin(sesion):
         print(f" Camaras activas:                      {contar_activas(estados)} de {len(estados['cam'])}")
     registrar_bitacora(sesion["usuario"], "Consulto el resumen general")
@@ -94,12 +121,18 @@ def ejecutar_sesion(datos, estados, televisores, sesion):
         elif opcion == 4:
             gestionar_televisores(datos, televisores, sesion)
         elif opcion == 5:
-            gestionar_camaras(estados, sesion)
+            gestionar_apuestas(datos, sesion)
         elif opcion == 6:
-            ver_bitacora(sesion)
+            editar_usuario(datos, sesion)
         elif opcion == 7:
-            mostrar_resumen(datos, estados, televisores, sesion)
+            eliminar_usuario(datos, televisores, sesion)
         elif opcion == 8:
+            gestionar_camaras(estados, sesion)
+        elif opcion == 9:
+            ver_bitacora(datos, televisores, sesion)
+        elif opcion == 10:
+            mostrar_resumen(datos, estados, televisores, sesion)
+        elif opcion == 11:
             crear_admin(sesion)
         elif opcion == 0:
             registrar_bitacora(sesion["usuario"], "Cierre de sesion")
@@ -113,10 +146,7 @@ def main():
     datos = crear_datos()
     estados = crear_estados()
     televisores = crear_televisores()
-    cargar_usuarios(datos)
-    datos["rechazados"] = contar_rechazados()
-    cargar_estados(estados)
-    cargar_televisores(televisores)
+    cargar_todo(datos, estados, televisores)
     registrar_bitacora("SISTEMA", "Programa iniciado")
     opcion = -1
     while opcion != 0:

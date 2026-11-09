@@ -1,6 +1,6 @@
 import hashlib
 import os
-from rutas import ARCHIVO_ADMINS, preparar_carpeta
+from archivos import ARCHIVO_ADMINS, preparar_carpeta
 from log import registrar_bitacora
 from entradas import leer_texto
 from pantalla import mostrar_titulo
