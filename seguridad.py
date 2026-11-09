@@ -1,4 +1,3 @@
-import getpass
 import hashlib
 import os
 from rutas import ARCHIVO_ADMINS, preparar_carpeta
@@ -47,7 +46,7 @@ def iniciar_sesion():
     mostrar_titulo("Inicio de sesion - administrador")
     for intento in range(1, MAX_INTENTOS + 1):
         usuario = input("Usuario: ").strip()
-        clave = getpass.getpass("Clave: ")
+        clave = input("Clave: ").strip()
         if usuario in admins and admins[usuario] == cifrar(clave):
             registrar_bitacora(usuario, "Inicio de sesion como administrador")
             print(f"\nBienvenido, {usuario}.")
@@ -86,7 +85,7 @@ def crear_admin(sesion):
     if usuario in admins:
         print("Ese usuario ya existe.")
         return
-    clave = getpass.getpass(f"Clave (minimo {LARGO_MINIMO_CLAVE} caracteres): ")
+    clave = input(f"Clave (minimo {LARGO_MINIMO_CLAVE} caracteres): ").strip()
     if len(clave) < LARGO_MINIMO_CLAVE:
         print("La clave es demasiado corta. No se creo el administrador.")
         return
